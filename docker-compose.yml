@@ -1,0 +1,35 @@
+# latest version of docker compose
+version: "3"
+
+services:
+  db:
+    image: postgres:12-alpine
+    environment:
+      - POSTGRES_DB=tyalent
+      - POSTGRES_USER=tushant
+      - POSTGRES_PASSWORD=tushant123
+    # to tell Compose where the container should be located in our Docker container
+
+  # to tell how the web service will run
+  # first Compose needs to build an image from the current dir & start up the server
+  # we use volumes to tell Compose to store the code in our Docker container at /code/
+  web:
+    build: .
+    command: >
+      sh -c "python /code/manage.py wait_for_db &&
+             python /code/manage.py runserver 0.0.0.0:8000"
+    environment:
+      - DB_HOST=db
+      - DB_NAME=tyalent
+      - DB_USER=tushant
+      - DB_PASS=tushant123
+    volumes:
+      - .:/code
+    # lets us map our port 8000 to the port 8000 in the Docker container
+    ports:
+      - 8000:8000
+    # it says that we should run the db first before running our web services
+    depends_on:
+      - db
+# Compose has a rule that you must list named volumes in a top-level volumes key
+# volumes: postgres_data
