@@ -1,9 +1,12 @@
 # latest version of docker compose
-version: "3"
+version: "3.7"
 
 services:
   db:
     image: postgres:12-alpine
+    # to persist the data beyond the life of the container we configured a volume
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
     environment:
       - POSTGRES_DB=tyalent
       - POSTGRES_USER=tushant
@@ -16,13 +19,14 @@ services:
   web:
     build: .
     command: >
-      sh -c "python /code/manage.py wait_for_db &&
-             python /code/manage.py runserver 0.0.0.0:8000"
+      sh -c "python manage.py runserver 0.0.0.0:8000"
     environment:
       - DB_HOST=db
       - DB_NAME=tyalent
       - DB_USER=tushant
       - DB_PASS=tushant123
+      - DB_PORT=5432
+      - DATABASE=postgres
     volumes:
       - .:/code
     # lets us map our port 8000 to the port 8000 in the Docker container
@@ -32,4 +36,5 @@ services:
     depends_on:
       - db
 # Compose has a rule that you must list named volumes in a top-level volumes key
-# volumes: postgres_data
+volumes:
+  postgres_data:
