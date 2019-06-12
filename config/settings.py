@@ -44,6 +44,7 @@ DJANGO_APPS = [
 # Project definition
 LOCAL_APPS = [
     'apps.accounts',
+    'apps.companies',
     'apps.tyalents',
 ]
 
