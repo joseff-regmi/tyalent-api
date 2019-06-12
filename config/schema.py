@@ -2,14 +2,24 @@ import graphene
 
 from graphapi.tyalents.schema import TyalentQueries
 from graphapi.tyalents import mutations as tyalent_mutation
+from graphapi.accounts.schema import UserSchema
+from graphapi.accounts import mutations as accounts_mutation
 
 
-class Queries(TyalentQueries, graphene.ObjectType):
+class Queries(TyalentQueries, UserSchema, graphene.ObjectType):
     pass
     # tyalent_profile = graphene.Field(TyalentQueries)
 
 
 class Mutations(graphene.ObjectType):
+    register = accounts_mutation.Register.Field()
+    login = accounts_mutation.Login.Field()
+    activate = accounts_mutation.Activate.Field()
+    deleteAccount = accounts_mutation.DeleteAccount.Field()
+    refreshToken = accounts_mutation.RefreshToken.Field()
+    resetPassword = accounts_mutation.ResetPassword.Field()
+    resetPasswordConfirmation = accounts_mutation.ResetPasswordConfirm.Field()
+    selectRole = accounts_mutation.SelectRole.Field()
     tyalent = tyalent_mutation.CreateTyalent.Field()
     updateTyalent = tyalent_mutation.UpdateTyalent.Field()
     experience = tyalent_mutation.CreateExperience.Field()

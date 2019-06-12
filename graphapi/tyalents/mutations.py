@@ -1,6 +1,7 @@
 import graphene
 
 from core.utils import get_instance
+from apps.accounts.models import Profile
 from apps.tyalents import models
 from graphapi.tyalents import schema
 from graphapi.tyalents import types
@@ -24,20 +25,14 @@ class CreateTyalent(graphene.Mutation):
             errors = ['unauthenticated']
             return CreateTyalent(success=False, errors=errors)
         else:
+            profile = Profile.objects.get(user=info.context.user)
             tyalent = models.Tyalent.objects.create(
-                user=info.context.user,
+                profile=profile,
                 career=data.get('career', None),
                 payment_type=data.get('payment_type', None),
                 expected_salary=data.get('expected_salary', None),
-                full_name=data.get('full_name', None),
-                age=data.get('age', None),
-                city=data.get('city', None),
-                address=data.get('address', None),
                 name_of_company=data.get('name_of_company', None),
                 job_title=data.get('job_title', None),
-                zip_code=data.get('zip_code', None),
-                slogan=data.get('slogan', None),
-                bio=data.get('bio', None),
                 website=data.get('website', None),
                 github=data.get('github', None),
                 linkedin=data.get('linkedin', None),
@@ -62,7 +57,8 @@ class UpdateTyalent(graphene.Mutation):
             errors = ['unauthenticated']
             return UpdateTyalent(success=False, errors=errors)
         else:
-            tyalent = models.Tyalent.objects.get(user=info.context.user)
+            profile = Profile.objects.get(user=info.context.user)
+            tyalent = models.Tyalent.objects.get(profile=profile)
             tyalent.career = data.get('career', None)
             tyalent.payment_type = data.get('payment_type', None)
             tyalent.expected_salary = data.get('expected_salary', None)

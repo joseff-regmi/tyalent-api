@@ -17,7 +17,7 @@ WORKDIR /code
 RUN echo "https://mirror.csclub.uwaterloo.ca/alpine/v3.9/main" > /etc/apk/repositories
 RUN echo "https://mirror.csclub.uwaterloo.ca/alpine/v3.9/community" >>/etc/apk/repositories
 RUN apk update
-RUN apk add --update --no-cache postgresql-client jpeg-dev
+RUN apk add --update --no-cache postgresql-client jpeg-dev libffi-dev
 RUN apk add --update --no-cache --virtual .tmp-build-deps \
     gcc libc-dev linux-headers postgresql-dev musl-dev zlib zlib-dev \
     && pip3 install psycopg2-binary \

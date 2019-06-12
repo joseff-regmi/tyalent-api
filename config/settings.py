@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
+import datetime
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -97,6 +98,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
+    'apps.accounts.middleware.JWTAuthenticationMiddleware',
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -122,14 +124,13 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'HOST': os.environ.get('DB_HOST'),
-        'NAME': os.environ.get('DB_NAME'),
-        'USER': os.environ.get('DB_USER'),
-        'PASSWORD': os.environ.get('DB_PASS'),
+        'HOST': os.environ.get('DB_HOST', 'localhost'),
+        'NAME': os.environ.get('DB_NAME', 'tyalent'),
+        'USER': os.environ.get('DB_USER', 'tushantkhatiwada'),
+        'PASSWORD': os.environ.get('DB_PASS', 'tushant123'),
         'PORT': os.environ.get('DB_PORT', '5432')
     }
 }
@@ -184,3 +185,35 @@ MEDIA_URL = "/media/"
 GRAPHENE = {
     'SCHEMA': 'config.schema.schema'
 }
+
+JWT_AUTH = {
+    'JWT_ALLOW_REFRESH': True,
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=7),
+    'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=7),
+    'JWT_AUTH_HEADER_PREFIX': 'JWT',
+}
+
+DJOSER = {
+    'DOMAIN': os.environ.get('DJANGO_DJOSER_DOMAIN', 'localhost:3000'),
+    'SITE_NAME': os.environ.get('DJANGO_DJOSER_SITE_NAME', 'Tyalent'),
+    'PASSWORD_RESET_CONFIRM_URL': '?action=set-new-password&uid={uid}&token={token}',
+    'ACTIVATION_URL': 'activate?uid={uid}&token={token}',
+    'SEND_ACTIVATION_EMAIL': True,
+}
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ),
+}
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+]

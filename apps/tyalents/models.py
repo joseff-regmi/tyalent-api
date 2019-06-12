@@ -1,12 +1,10 @@
 from django.core.validators import MaxValueValidator, MinValueValidator
 from phonenumber_field.modelfields import PhoneNumberField
-from django.conf import settings
 from django.db import models
 
 from core.models.timestamp_models import TimeStampModels
+from apps.accounts.models import Profile
 from core.utils import create_slug
-
-User = settings.AUTH_USER_MODEL
 
 
 class Tyalent(TimeStampModels):
@@ -19,23 +17,14 @@ class Tyalent(TimeStampModels):
         ('Hourly Rate', 'hourly_rate'),
         ('Salary', 'salary'),
     )
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    profile = models.OneToOneField(Profile, on_delete=models.CASCADE)
     career = models.CharField(
         max_length=14, default="begineer", choices=CAREER_CHOICES)
     payment_type = models.CharField(
         max_length=12, choices=PAY_CHOICEs, default="salary")
     expected_salary = models.FloatField(blank=False, null=False)
-    full_name = models.CharField(max_length=100, blank=True, null=True)
-    age = models.PositiveSmallIntegerField(blank=True, null=True)
-    country = models.CharField(max_length=100, blank=True, null=True)
-    city = models.CharField(max_length=100, blank=True, null=True)
-    address = models.CharField(max_length=100, blank=True, null=True)
-    phone_number = PhoneNumberField(blank=True, null=True)
     name_of_company = models.CharField(max_length=150, blank=True, null=True)
     job_title = models.CharField(max_length=100, blank=True, null=True)
-    zip_code = models.PositiveSmallIntegerField(blank=True, null=True)
-    slogan = models.CharField(max_length=400, blank=True, null=True)
-    bio = models.TextField(blank=True, null=True)
     website = models.URLField(blank=True, null=True)
     github = models.URLField(blank=True, null=True)
     twitter = models.URLField(blank=True, null=True)
