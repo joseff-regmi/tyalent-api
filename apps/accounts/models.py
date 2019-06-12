@@ -10,6 +10,9 @@ from .managers import UserManager
 
 
 class User(AbstractUser):
+    '''
+        custom user
+    '''
     username = None
     email = models.EmailField(_("Email Address"), unique=True)
     is_tyalent = models.BooleanField(default=True)
