@@ -30,7 +30,15 @@ class UserSchema(graphene.ObjectType):
     users = DjangoFilterConnectionField(UserQuery)
     user = graphene.Field(UserQuery)
 
+    profile = graphene.Field(ProfileQuery)
+
     def resolve_user(self, info):
         if info.context.user.is_authenticated:
             return info.context.user
+        return None
+
+    def resolve_profile(self, info):
+        user = info.context.user
+        if user.is_authenticated:
+            return Profile.objects.get(user=user)
         return None

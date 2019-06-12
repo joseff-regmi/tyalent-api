@@ -19,6 +19,8 @@ class Mutations(graphene.ObjectType):
     refreshToken = accounts_mutation.RefreshToken.Field()
     resetPassword = accounts_mutation.ResetPassword.Field()
     resetPasswordConfirmation = accounts_mutation.ResetPasswordConfirm.Field()
+    profile = accounts_mutation.CreateProfile.Field()
+    updateProfile = accounts_mutation.UpdateProfile.Field()
     selectRole = accounts_mutation.SelectRole.Field()
     tyalent = tyalent_mutation.CreateTyalent.Field()
     updateTyalent = tyalent_mutation.UpdateTyalent.Field()

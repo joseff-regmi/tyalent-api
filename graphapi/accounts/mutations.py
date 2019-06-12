@@ -11,6 +11,7 @@ from django.conf import settings
 
 from apps.accounts.serializers import PasswordResetConfirmRetypeSerializer, RegistrationSerializer
 from .schema import UserQuery, ProfileQuery
+from apps.accounts.models import Profile
 from .types import ProfileInput
 from .utils import send_activation_email, send_password_reset_email
 
@@ -286,6 +287,7 @@ class UpdateProfile(graphene.Mutation):
             profile.zip_code = data.get('zip_code')
             profile.slogan = data.get('slogan')
             profile.bio = data.get('bio')
+            profile.save()
             return UpdateProfile(profile=profile, success=True, errors=None)
 
 
