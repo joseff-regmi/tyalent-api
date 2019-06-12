@@ -30,7 +30,7 @@ class User(AbstractUser):
 
 class Profile(TimeStampModels):
     '''
-    Profile modal common to all kinds of users
+    Profile table common to all kinds of users
     '''
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=100, blank=True, null=True)
