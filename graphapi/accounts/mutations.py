@@ -246,6 +246,7 @@ class CreateProfile(graphene.Mutation):
                 user=user,
                 first_name=data.get('first_name'),
                 last_name=data.get('last_name'),
+                avatar=info.context.FILES.get(data.get('avatar', None)),
                 age=data.get('age'),
                 country=data.get('country'),
                 city=data.get('city'),
@@ -279,6 +280,7 @@ class UpdateProfile(graphene.Mutation):
             profile = Profile.objects.get(user=user)
             profile.first_name = data.get('first_name')
             profile.last_name = data.get('last_name')
+            profile.avatar = info.context.FILES.get(data.get('avatar', None))
             profile.age = data.get('age')
             profile.country = data.get('country')
             profile.city = data.get('city')

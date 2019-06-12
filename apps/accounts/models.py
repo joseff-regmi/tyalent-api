@@ -29,6 +29,7 @@ class Profile(TimeStampModels):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=100, blank=True, null=True)
     last_name = models.CharField(max_length=100, blank=True, null=True)
+    avatar = models.ImageField(blank=True, null=True, upload_to="avatar/")
     age = models.PositiveSmallIntegerField(blank=True, null=True)
     country = models.CharField(max_length=100, blank=True, null=True)
     city = models.CharField(max_length=100, blank=True, null=True)

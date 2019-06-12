@@ -18,6 +18,7 @@ channels = "*"
 channels-redis = "*"
 django-phonenumber-field = "*"
 phonenumbers = "*"
+pillow = "*"
 
 [dev-packages]
 pylint = "*"
